@@ -1,0 +1,78 @@
+batched 2 threads.
+serial 1024 x 1024(512) MatrixMul time = 12250
+parallel 1024 x 1024(512) MatrixMul time = 6485
+serial 1024 x 1024(256) MatrixMul time = 11359
+parallel 1024 x 1024(256) MatrixMul time = 5016
+serial 1024 x 1024(128) MatrixMul time = 10719
+parallel 1024 x 1024(128) MatrixMul time = 4860
+serial 1024 x 1024(64) MatrixMul time = 9720
+parallel 1024 x 1024(64) MatrixMul time = 4468
+serial 1024 x 1024(32) MatrixMul time = 8953
+parallel 1024 x 1024(32) MatrixMul time = 4078
+serial 1024 x 1024(16) MatrixMul time = 9095
+parallel 1024 x 1024(16) MatrixMul time = 4235
+serial 1024 x 1024(8) MatrixMul time = 9845
+parallel 1024 x 1024(8) MatrixMul time = 4704
+
+batched 2 threads.  notice 8 times slower confirming O(n^3)
+serial 512 x 512(512) MatrixMul time = 1546
+parallel 512 x 512(512) MatrixMul time = 1548
+serial 512 x 512(256) MatrixMul time = 1437
+parallel 512 x 512(256) MatrixMul time = 688
+serial 512 x 512(128) MatrixMul time = 1172
+parallel 512 x 512(128) MatrixMul time = 594
+serial 512 x 512(64) MatrixMul time = 1281
+parallel 512 x 512(64) MatrixMul time = 580
+serial 512 x 512(32) MatrixMul time = 1000
+parallel 512 x 512(32) MatrixMul time = 516
+serial 512 x 512(16) MatrixMul time = 1156
+parallel 512 x 512(16) MatrixMul time = 547
+serial 512 x 512(8) MatrixMul time = 1157
+parallel 512 x 512(8) MatrixMul time = 609
+
+batched 30 threads.
+serial 512 x 512(512) MatrixMul time = 1547
+parallel 512 x 512(512) MatrixMul time = 2038
+serial 512 x 512(256) MatrixMul time = 1469
+parallel 512 x 512(256) MatrixMul time = 747
+serial 512 x 512(128) MatrixMul time = 1393
+parallel 512 x 512(128) MatrixMul time = 634
+serial 512 x 512(64) MatrixMul time = 1359
+parallel 512 x 512(64) MatrixMul time = 593
+serial 512 x 512(32) MatrixMul time = 1001
+parallel 512 x 512(32) MatrixMul time = 659
+serial 512 x 512(16) MatrixMul time = 1032
+parallel 512 x 512(16) MatrixMul time = 653
+serial 512 x 512(8) MatrixMul time = 1110
+parallel 512 x 512(8) MatrixMul time = 721
+
+normal batched 2 thread
+serial 512 x 512(4) MatrixMul time = 1406
+parallel 512 x 512(4) MatrixMul time = 750
+speedup factor of 1.8746666666666667 x
+serial 512 x 512(8) MatrixMul time = 1187
+parallel 512 x 512(8) MatrixMul time = 578
+speedup factor of 2.0536332179930796 x
+serial 512 x 512(16) MatrixMul time = 1109
+parallel 512 x 512(16) MatrixMul time = 531
+speedup factor of 2.0885122410546137 x
+serial 512 x 512(32) MatrixMul time = 1000
+parallel 512 x 512(32) MatrixMul time = 515
+speedup factor of 1.941747572815534 x
+serial 512 x 512(64) MatrixMul time = 1062
+parallel 512 x 512(64) MatrixMul time = 547
+speedup factor of 1.9414990859232175 x
+serial 512 x 512(128) MatrixMul time = 1235
+parallel 512 x 512(128) MatrixMul time = 641
+speedup factor of 1.9266770670826834 x
+serial 512 x 512(256) MatrixMul time = 1234
+parallel 512 x 512(256) MatrixMul time = 657
+speedup factor of 1.878234398782344 x
+serial 512 x 512(512) MatrixMul time = 1422
+parallel 512 x 512(512) MatrixMul time = 1438
+speedup factor of 0.9888734353268428 x
+
+good news it is hard to do worse than the serial version when you don't have r/w dependancies like in MMul.  
+However, if there were read write dependencies (e.g. MMul in place), then each core has to maintain cache coherence which means writing to main mem (+ could block if other cores accessing), and back to local caches
+
+Situation always gets worse with more cores even for parallel MMul. 
